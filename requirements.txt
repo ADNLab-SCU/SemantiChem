@@ -1,0 +1,42 @@
+# Python version
+python==3.10
+
+# === Basic dependencies ===
+numpy==1.26.4
+pandas==2.2.3
+scikit-learn==1.7.0
+scipy==1.14.1
+tqdm==4.67.1
+requests==2.32.4
+regex==2024.9.11
+
+# === Molecular processing ===
+rdkit==2023.09.5
+selfies==2.2.0
+
+# === GNN + PyTorch (CUDA 11.8 assumed) ===
+torch==2.5.1                # Main torch version (CUDA 11.8)
+torch-geometric==2.6.1
+torch-cluster==1.6.3+pt20cu118
+torch-scatter==2.1.2+pt20cu118
+torch-sparse==0.6.18+pt20cu118
+torch-spline-conv==1.2.2+pt20cu118
+torchaudio==2.0.1+cu118
+torchvision==0.15.1+cu118
+
+# === Visualization & scaffold mapping ===
+matplotlib==3.9.2
+matplotlib-venn==1.1.2
+tmap>=1.0.6
+faerun>=0.4.7
+
+# Note:
+# This file lists only the key dependencies required to run core prediction, evaluation, and visualization modules.
+# Additional dependencies may be required depending on the use case.
+#
+# For full installation instructions, please refer to the source code or the following projects:
+# - GLAM: https://github.com/yvquanli/GLAM
+# - TMAP: https://github.com/reymond-group/tmap
+#
+# Model training components (e.g., LLM finetuning) rely on LLaMA Factory:
+# https://github.com/hiyouga/LLaMA-Factory
