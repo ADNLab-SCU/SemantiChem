@@ -2,7 +2,7 @@
 
 import os
 import numpy as np
-import pandas as pd  # 确保导入 pandas
+import pandas as pd 
 from rdkit import rdBase, Chem, DataStructs
 from rdkit.Chem import AllChem, MACCSkeys
 import matplotlib.pyplot as plt
@@ -19,7 +19,7 @@ def canonicalize_smiles(smiles):
     if mol:
         return Chem.MolToSmiles(mol, canonical=True)
     else:
-        return None  # 对于无效的SMILES，返回None
+        return None 
 def is_valid_smiles(smiles):
     if pd.isna(smiles) or smiles.strip() == "":
         return False
@@ -27,12 +27,10 @@ def is_valid_smiles(smiles):
         return False
     return True
 
-
-# 对两个数据集的SMILES进行标准化
 data['canonical_smiles'] = data['smiles'].apply(canonicalize_smiles)
 data.to_csv("smiles.csv", index = False)
 data['selfies']=data['canonical_smiles'].apply(lambda x: sf.encoder(x) if is_valid_smiles(x) else None)
 
 data.to_csv("sf.csv", index = False)
 
-print("计算完成，结果已保存")
+print("Calculation completed, result saved.")

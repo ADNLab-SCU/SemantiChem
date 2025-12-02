@@ -1,6 +1,6 @@
 # 🧬 Task-Driven Discovery of Nucleic Acid Ligands Using Large Language Models
 
-SemantiChem is a task-driven framework for nucleic acid ligand generation using large language models (LLMs). This repository presents a modular and reproducible workflow for instruction fine-tuning and evaluation of large language models (LLMs) to generate chemically valid molecules targeting nucleic acid (NA) structures, with a focus on G-quadruplex (G4) motifs. The pipeline integrates:
+This repository presents a modular and reproducible workflow for instruction fine-tuning and evaluation of large language models (LLMs) to generate chemically valid molecules targeting nucleic acid (NA) structures, with a focus on G-quadruplex (G4) motifs. The pipeline integrates:
 
 - **Molecular generation** via instruction-tuned LLMs (based on the [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory)),
 - **Activity prediction** using a graph neural network (GNN) adapted from [GLAM](https://github.com/yvquanli/GLAM),
