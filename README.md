@@ -1,11 +1,17 @@
-# 🧬 Task-Driven Discovery of Nucleic Acid Ligands Using Large Language Models
+## SemantiChem: Companion Repository for 
+# “Pure Natural-Language Generation of Nucleic-Acid-Targeting Ligands Enabled by Instruction-Tuned Large Language Models”
 
-This repository presents a modular and reproducible workflow for instruction fine-tuning and evaluation of large language models (LLMs) to generate chemically valid molecules targeting nucleic acid (NA) structures, with a focus on G-quadruplex (G4) motifs. The pipeline integrates:
+
+This repository provides a modular and reproducible workflow for instruction fine-tuning and evaluation of large language models (LLMs) to generate chemically valid ligands targeting nucleic acid (NA) structures, with a focus on G-quadruplex (G4) motifs. The pipeline integrates:
 
 - **Molecular generation** via instruction-tuned LLMs (based on the [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory)),
 - **Activity prediction** using a graph neural network (GNN) adapted from [GLAM](https://github.com/yvquanli/GLAM),
 - **Scaffold-level evaluation** and **similarity-based visualization**.
 
+## Note:
+This repository contains **code only**. 
+All proprietary or curated datasets used in the manuscript are provided in **Supplementary Data** upon submission.
+Public datasets (e.g., PubChem10M SELFIES, G4LDB 3.0) are linked here for convenience.
 ---
 
 ## 📁 Directory Structure
