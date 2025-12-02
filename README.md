@@ -8,7 +8,7 @@ This repository provides a modular and reproducible workflow for instruction fin
 - **Activity prediction** using a graph neural network (GNN) adapted from [GLAM](https://github.com/yvquanli/GLAM),
 - **Scaffold-level evaluation** and **similarity-based visualization**.
 
-## Note:
+# Note:
 This repository contains **code only**. 
 All proprietary or curated datasets used in the manuscript are provided in **Supplementary Data** upon submission.
 Public datasets (e.g., PubChem10M SELFIES, G4LDB 3.0) are linked here for convenience.
