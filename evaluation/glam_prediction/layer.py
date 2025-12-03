@@ -1,5 +1,3 @@
-#layer.py
-import numpy as np
 import torch
 from torch.nn import Parameter, Dropout
 from torch.nn import Sequential, Linear, ReLU, CELU, RReLU, LeakyReLU, GRU
@@ -13,7 +11,6 @@ from torch_geometric.nn import (
 )
 from torch_geometric.nn.conv import MessagePassing
 from torch_geometric.utils import softmax
-
 
 
 class _None(torch.nn.Module):
@@ -57,8 +54,7 @@ class _GraphSizeNorm(torch.nn.Module):
         self.norm = GraphSizeNorm()
 
     def forward(self, x, batch=None):
-        return self.norm(x)
-
+        return self.norm(x, batch)
 
 
 class _NNConv(torch.nn.Module):
@@ -87,7 +83,6 @@ class _GATConv(torch.nn.Module):
 
     def forward(self, x, edge_index, edge_attr):
         return self.conv(x, edge_index)
-
 
 
 class TripletMessage(MessagePassing):
@@ -178,7 +173,6 @@ class _TripletMessageLight(torch.nn.Module):
         return self.conv(x, edge_index, edge_attr)
 
 
-
 class GlobalPool5(torch.nn.Module):
     def __init__(self, **params):
         super(GlobalPool5, self).__init__()
@@ -199,7 +193,6 @@ class GlobalLAPool(torch.nn.Module):
 
     def forward(self, x, batch):
         return self.pool(x, batch)
-
 
 
 class LinearBlock(torch.nn.Module):
@@ -245,19 +238,3 @@ class MessageBlock(torch.nn.Module):
             x = x + identity
         x = self.act(x)
         return x, h
-
-
-
-def dot_and_global_pool5(mol_out, pro_out, mol_batch, pro_batch):
-    mol_node_slice = torch.cumsum(torch.from_numpy(np.bincount(mol_batch.cpu())), 0)
-    pro_node_slice = torch.cumsum(torch.from_numpy(np.bincount(pro_batch.cpu())), 0)
-    batch_size = mol_batch.max() + 1
-    out = mol_out.new_zeros([batch_size, 5])
-    for i in range(batch_size):
-        m_start = mol_node_slice[i - 1].item() if i != 0 else 0
-        p_start = pro_node_slice[i - 1].item() if i != 0 else 0
-        m_end = mol_node_slice[i].item()
-        p_end = pro_node_slice[i].item()
-        item = torch.matmul(mol_out[m_start:m_end], pro_out[p_start:p_end].T)
-        out[i] = torch.stack([item.max(), item.mean(), item.median(), item.min(), item.std()])
-    return out

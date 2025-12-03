@@ -15,26 +15,11 @@ def norm_factory(norm_str, fixed_dim=None):
     else:
         return lambda in_channels: cls(in_channels)
 
-
-def model_args(args):
-    _other_args_name = ['dataset_root', 'dataset', 'split', 'seed', 'gpu', 'note', 'batch_size', 'epochs', 'loss',
-                        'optim', 'k', 'lr', 'lr_reduce_rate', 'lr_reduce_patience', 'early_stop_patience',
-                        'verbose_patience', 'split_seed', 'test']
-    model_args_dict = {k: v for k, v in args.__dict__.items() if k not in _other_args_name}
-    return model_args_dict
-
-
-def init_weith_with_gain(modules):
-    for m in modules:
-        if isinstance(m, LinearBlock):
-            torch.nn.init.xavier_uniform_(m.linear.weight, gain=4)
-
-
 class Architecture(torch.nn.Module):
     def __init__(self, mol_in_dim=15,
                  mol_edge_in_dim=4,
                  hid_dim_alpha=4, e_dim=2048, out_dim=1,
-                 mol_block='_NNConv', message_steps=3,
+                 mol_block='_TripletMessageLight', message_steps=3,
                  mol_readout='GlobalLAPool',
                  pre_norm='_None', graph_norm='_None', flat_norm='_None', end_norm='_None',
                  pre_do='Dropout(0.1)', graph_do='Dropout(0.1)', flat_do='Dropout(0.2)', end_do='Dropout(0.1)',
@@ -43,8 +28,6 @@ class Architecture(torch.nn.Module):
         super(Architecture, self).__init__()
 
         hid_dim = mol_in_dim * hid_dim_alpha
-
-       
         fixed_norm_dim = 1  
 
         self.pre_norm = norm_factory(pre_norm, fixed_dim=fixed_norm_dim)
@@ -92,6 +75,3 @@ class Architecture(torch.nn.Module):
         outm = self.mol_flat(outm)
         out = self.lin_out1(outm)
         return out
-
-
-Model = Architecture

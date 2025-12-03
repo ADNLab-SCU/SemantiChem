@@ -71,7 +71,7 @@ def predict_from_csv(ckpt_path, input_csv, output_csv, smiles_col="SMILES", id_c
     skipped = []
 
     with torch.no_grad():
-        for i, smi in enumerate(tqdm(smiles_list, desc="🔬 Predicting")):
+        for i, smi in enumerate(tqdm(smiles_list, desc="Predicting")):
             data = smiles_to_data(smi)
             if data is None:
                 preds.append(None)
