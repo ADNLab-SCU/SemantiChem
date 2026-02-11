@@ -1,9 +1,12 @@
 # SemantiChem: Companion Repository
 
-## _“Pure Natural-Language Generation of Nucleic-Acid-Targeting Ligands Enabled by Instruction-Tuned Large Language Models”_
+## _“Function-Driven Molecular Design Enabled by Instruction-Tuned Large Language Models”_
+
+This repository provides the source code supporting **SemantiChem**, an instruction-tuned generative framework for *function-driven molecular design*. The framework maps functional design objectives expressed in natural language directly to chemically meaningful molecular structures, without relying on predefined geometric constraints, molecular scaffolds, or pocket-centric assumptions.
+
+The codebase supports molecular generation, evaluation, and analysis workflows used to study biomolecular targets exhibiting different recognition regimes, including nucleic acid G-quadruplexes, RNA structures, and protein targets. It implements the computational components underlying the generative, evaluation, and benchmarking procedures described in the manuscript.
 
 
-This repository provides a modular and reproducible workflow for instruction fine-tuning and evaluation of large language models (LLMs) to generate chemically valid ligands targeting nucleic acid (NA) structures, with a focus on G-quadruplex (G4) motifs. The pipeline integrates:
 
 - **Molecular generation** via instruction-tuned LLMs (based on the [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory)),
 - **Activity prediction** using a graph neural network (GNN) adapted from [GLAM](https://github.com/yvquanli/GLAM),
@@ -39,7 +42,7 @@ Public datasets (e.g., PubChem10M SELFIES, G4LDB 3.0) are linked here for conven
 ```
 ---
 
-## 🚀 How to Reproduce
+## 🔬 Methodological Workflow Overview
 
 ### Step 1: Construct Q&A Data
 
@@ -94,20 +97,7 @@ Users may substitute datasets as long as formats are consistent.
 - Scaffold and similarity evaluation modules rely on RDKit and MACCS fingerprints.
 - The entire workflow is modular and components can be executed independently or as a pipeline.
 
----
 
-## 📑 Citation
-
-*This project is part of ongoing research. Please cite the corresponding paper when available.*
-
-```bibtex
-@article{ADNLab2025ChemE,
-  title = {Task-Driven Discovery of Nucleic Acid Ligands Using Large Language Models},
-  author = {ADNLab},
-  journal = {To be submitted},
-  year = {2025}
-}
-```
 
 ---
 
@@ -219,3 +209,18 @@ A typical reproduction workflow is:
 4.	Compare outputs with reference datasets provided in **Supplementary Notes 0 and 3–8**
 
 This structure ensures that the generation, evaluation, and benchmarking procedures reported in the manuscript can be independently verified.
+
+---
+
+## 📑 Citation
+
+*This project is part of ongoing research. Please cite the corresponding paper when available.*
+
+```bibtex
+@article{ADNLab2025ChemE,
+  title = {Function-Driven Molecular Design Enabled by Instruction-Tuned Large Language Models},
+  author = {ADNLab},
+  journal = {To be submitted},
+  year = {2025}
+}
+```
