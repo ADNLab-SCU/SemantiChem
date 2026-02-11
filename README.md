@@ -1,23 +1,23 @@
-# SemantiChem: Companion Code Repository (Submission Version)
+# SemantiChem: Companion Repository
+
+## _“Pure Natural-Language Generation of Nucleic-Acid-Targeting Ligands Enabled by Instruction-Tuned Large Language Models”_
+
+
+This repository provides a modular and reproducible workflow for instruction fine-tuning and evaluation of large language models (LLMs) to generate chemically valid ligands targeting nucleic acid (NA) structures, with a focus on G-quadruplex (G4) motifs. The pipeline integrates:
+
+- **Molecular generation** via instruction-tuned LLMs (based on the [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory)),
+- **Activity prediction** using a graph neural network (GNN) adapted from [GLAM](https://github.com/yvquanli/GLAM),
+- **Scaffold-level evaluation** and **similarity-based visualization**.
 
 ### Note
+This repository contains the source code used in the computational experiments. Model weights and full computational outputs are provided separately (see below).
 
-This repository provides a minimal set of utility scripts used in the computational experiments of our manuscript.
-It contains **code only**, and does not include training scripts, datasets, model checkpoints, or full pipeline documentation.
-
-The codebase includes modules for:
-
--  basic molecular format conversion (e.g., SMILES ↔ SELFIES),
-- RDKit-based property calculations,
-- simple scaffold and similarity analyses,
-- optional interfaces for running model inference.
-
-All curated or proprietary datasets used in the study are provided in the **Supplementary Data** upon submission.
-A complete and fully documented version of this repository will be released upon publication.
+All proprietary or curated datasets used in the manuscript are provided in **Supplementary Data** upon submission.
+Public datasets (e.g., PubChem10M SELFIES, G4LDB 3.0) are linked here for convenience.
 
 ---
 
-## Directory Structure
+## 📁 Directory Structure
 ```
 ├── data_utils/
 │   ├── smiles_to_selfies.py
@@ -39,8 +39,183 @@ A complete and fully documented version of this repository will be released upon
 ```
 ---
 
-## Usage
+## 🚀 How to Reproduce
 
-Each module can be run independently.
-Comments within the scripts describe expected inputs and outputs.
-Additional experimental details and intermediate data are provided in the Supplementary Information accompanying the manuscript.
+### Step 1: Construct Q&A Data
+
+Convert G4 ligand SMILES into SELFIES and construct instruction-style Q&A pairs using pre-defined templates (e.g., `type1`, `type2`, `type3`).
+
+### Step 2: Pretrain and Fine-Tune LLMs
+
+We explored two distinct LLMs for scaffold-aware molecular generation:
+
+- **Instruct-G4**: Based on [Meta-LLaMA-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct), a general-purpose model without domain-specific pretraining.  
+- **ChemE-G4**: Based on *LLaMA-3.1-ChemEinstein* ([ZeroXClem/Llama3.1-BestMix-Chem-Einstein-8B](https://huggingface.co/ZeroXClem/Llama3.1-BestMix-Chem-Einstein-8B)), pretrained on SMILES data for structural fluency.
+
+Training pipeline:
+
+1. **SELFIES Pretraining**: LoRA adaptation using ~10k molecules from PubChem10M_SELFIES.  
+2. **Instruction Tuning**: Fine-tuning on curated G4 ligands with scaffold-conditioned prompts.
+
+🔗 Finetuned models (available on Hugging Face):
+
+- [Instruct-G4](https://huggingface.co/ADNLab-SCU/Instruct-G4)  
+- [ChemE-G4](https://huggingface.co/ADNLab-SCU/ChemE-G4)
+
+### Step 3: Generate Molecules
+
+Use API-based inference to generate SELFIES-format molecules, then convert to SMILES for downstream analysis.
+
+### Step 4: Evaluate Results
+
+- **Activity prediction** using a GLAM-based GNN model  
+- **Molecular properties**: QED, SA score  
+- **Scaffold retention and novelty**  
+- **Similarity and diversity** analysis via MACCS + TMAP  
+
+---
+
+## 📊 Dataset Overview
+
+The pipeline uses the following datasets:
+
+- **G4LDB Ligands**: Expert-curated G4-binding molecules from [G4LDB 3.0](https://www.g4ldb.com/#/).
+- **SELFIES Pretraining Set**: A ~10k molecule subset from [PubChem10M_SELFIES](https://huggingface.co/datasets/alxfgh/PubChem10M_SELFIES).
+- **Generated Molecules**: Created by fine-tuned LLMs (SELFIES format), then canonicalized as SMILES for evaluation.
+
+Users may substitute datasets as long as formats are consistent.
+
+---
+
+## 💡 Notes for Usage
+
+- Model training and inference follow the [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory) API and YAML configuration format.
+- GNN-based prediction is located in `3.evaluation/glam_prediction/`, with pretrained checkpoints provided.
+- Scaffold and similarity evaluation modules rely on RDKit and MACCS fingerprints.
+- The entire workflow is modular and components can be executed independently or as a pipeline.
+
+---
+
+## 📑 Citation
+
+*This project is part of ongoing research. Please cite the corresponding paper when available.*
+
+```bibtex
+@article{ADNLab2025ChemE,
+  title = {Task-Driven Discovery of Nucleic Acid Ligands Using Large Language Models},
+  author = {ADNLab},
+  journal = {To be submitted},
+  year = {2025}
+}
+```
+
+---
+
+### 🖥 Software Environment and Execution
+
+The code in this repository has been tested under the following environment:
+- Python 3.10
+- PyTorch 2.1.2 + CUDA 12.1
+- Transformers 4.38
+- RDKit 2023.09
+- Operating Systems: Ubuntu 22.04, Windows 11 (WSL2)
+
+Hardware
+- A GPU (≥16GB VRAM) is recommended for efficient inference
+- CPU-only mode is supported for small-scale or demo runs
+
+---
+
+### ⚙ Installation Guide
+
+```
+conda create -n semantichem python=3.10
+conda activate semantichem
+pip install -r requirements.txt
+```
+
+Typical installation time: ~10 minutes on a standard desktop computer with internet access.
+
+After installation, no internet connection is required except for the initial download of model weights from Hugging Face.
+
+---
+
+### ▶ Minimal Inference Example (for peer review)
+
+This repository contains the source code used in the computational experiments.
+Model weights are hosted on Hugging Face and are accessible to editors and reviewers during peer review via a read-only access token.
+
+Step 1 — Authenticate with Hugging Face
+
+huggingface-cli login --token **<REVIEW_TOKEN>**
+
+Step 2 — Run a minimal generation example
+
+Example prompt (similar to those used in the manuscript and Supplementary Information):
+
+“Please show me a G-quadruplex ligand which hasn’t been reported. Be sure the structure is novel and unique.”
+
+Run inference using the generation script in this repository:
+
+```
+python 2.molecule_generation/request.py \
+  --model ADNLab-SCU/Instruct-G4 \
+  --prompt "Please show me a G-quadruplex ligand which hasn’t been reported. Be sure the structure is novel and unique."
+```
+
+Expected output
+
+The script produces a list of generated molecules represented as SELFIES and/or SMILES strings, for example:
+- SELFIES: [C][=C][N][Ring1][=C]...
+- SMILES: C1=CC=NC2=NC=NC(=N2)N1
+
+Expected runtime
+
+| Mode | Runtime|
+|------|--------|
+| GPU	| ~1–2 minutes|
+| CPU	| ~5–10 minutes|
+
+
+---
+
+### 🧪 Running on Your Own Prompts
+
+You may substitute your own instruction text:
+
+```
+python 2.molecule_generation/request.py \
+  --model ADNLab-SCU/Instruct-G4 \
+  --prompt "<YOUR_PROMPT>"
+```
+
+Batch prompts can be constructed following the prompt templates described in the manuscript and Supplementary Note 2.
+
+---
+
+### 🔗 Relationship Between Code, Model Weights, and Supplementary Data
+
+The complete computational workflow described in the manuscript is distributed across the following components:
+
+| Component | Location | Role in Reproducibility |
+|-----------|----------|-------------------------|
+| Source code | This GitHub repository | Data construction, molecular generation, and evaluation scripts |
+| Model weights | Hugging Face (ADNLab-SCU models) | Finetuned LLM checkpoints used for molecular generation |
+| Training configurations | Supplementary Note 2 | YAML files defining model training and fine-tuning setup |
+| Prompt templates | Supplementary Note 2.4 | Instruction templates used for generation |
+| Complete generation outputs | Supplementary Note 0.2 | Full sets of molecules generated by all models |
+| Evaluation results | Supplementary Notes 3–8 | GNN predictions, docking scores, TMAP embeddings, and benchmarking data |
+
+The Supplementary Data archive (hosted on Figshare and linked in the manuscript) contains all intermediate and final computational outputs required to reproduce the quantitative analyses presented in the paper.
+
+---
+
+### 🔁 Reproducibility Pathway
+
+A typical reproduction workflow is:
+1.	Use prompt templates from **Supplementary Note 2.4**
+2.	Run inference with finetuned model weights (Hugging Face) using scripts in **2.molecule_generation/**
+3.	Evaluate generated molecules using modules in **3.evaluation/**
+4.	Compare outputs with reference datasets provided in **Supplementary Notes 0 and 3–8**
+
+This structure ensures that the generation, evaluation, and benchmarking procedures reported in the manuscript can be independently verified.
