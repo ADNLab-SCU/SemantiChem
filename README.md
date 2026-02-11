@@ -101,7 +101,7 @@ Users may substitute datasets as long as formats are consistent.
 
 ---
 
-### 🖥 Software Environment and Execution
+## 🖥 Software Environment and Execution
 
 The code in this repository has been tested under the following environment:
 - Python 3.10
@@ -116,7 +116,7 @@ Hardware
 
 ---
 
-### ⚙ Installation Guide
+## ⚙ Installation Guide
 
 ```
 conda create -n semantichem python=3.10
@@ -130,7 +130,7 @@ After installation, no internet connection is required except for the initial do
 
 ---
 
-### ▶ Minimal Inference Example (for peer review)
+## ▶ Minimal Inference Example (for peer review)
 
 This repository contains the source code used in the computational experiments.
 Model weights are hosted on Hugging Face and are accessible to editors and reviewers during peer review via a read-only access token.
@@ -169,7 +169,7 @@ Expected runtime
 
 ---
 
-### 🧪 Running on Your Own Prompts
+## 🧪 Running on Your Own Prompts
 
 You may substitute your own instruction text:
 
@@ -183,7 +183,7 @@ Batch prompts can be constructed following the prompt templates described in the
 
 ---
 
-### 🔗 Relationship Between Code, Model Weights, and Supplementary Data
+## 🔗 Relationship Between Code, Model Weights, and Supplementary Data
 
 The complete computational workflow described in the manuscript is distributed across the following components:
 
@@ -200,7 +200,7 @@ The Supplementary Data archive (hosted on Figshare and linked in the manuscript)
 
 ---
 
-### 🔁 Reproducibility Pathway
+## 🔁 Reproducibility Pathway
 
 A typical reproduction workflow is:
 1.	Use prompt templates from **Supplementary Note 2.4**
